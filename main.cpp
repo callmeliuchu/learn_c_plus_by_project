@@ -77,6 +77,10 @@ int main(){
                        "0002222222200000";
 
     assert(sizeof(map) == map_w * map_h + 1);
+    float player_x = 3.456;
+    float player_y = 2.345;
+
+
     for(size_t j=0;j<win_h;j++){
         for(size_t i=0;i<win_w;i++){
             uint8_t r = 255 * j / float(win_h);
@@ -89,15 +93,16 @@ int main(){
 
     const size_t rect_w = win_w / map_w;
     const size_t rect_h = win_h / map_h;
+
     for(size_t j=0;j<map_h;j++){
         for(size_t i=0;i<map_w;i++){
             if(map[i+j*map_w] == ' ') continue;
             size_t rect_x = i * rect_w;
             size_t rect_y = j * rect_h;
-            draw_rectangle(frambuffer,win_w,win_h,rect_x,rect_y,rect_w,rect_w,pack_color(0,255,255));
+            draw_rectangle(frambuffer,win_w,win_h,rect_x,rect_y,rect_w,rect_h,pack_color(0,255,255));
         }
     }
-
+    draw_rectangle(frambuffer,win_w,win_h,player_x*rect_w,player_y*rect_h,5,5,pack_color(255,255,255));
 
     drop_ppm_image("./out.ppm",frambuffer,win_w,win_h);
     return 0;
