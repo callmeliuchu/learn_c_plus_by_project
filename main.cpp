@@ -7,6 +7,7 @@
 #include <fstream>
 #include <vector>
 #include <cstdint>
+#include <cmath>
 #include <cassert>
 
 
@@ -79,6 +80,8 @@ int main(){
     assert(sizeof(map) == map_w * map_h + 1);
     float player_x = 3.456;
     float player_y = 2.345;
+    float player_a = 1.523;
+    const float fov = M_PI/3.;
 
 
     for(size_t j=0;j<win_h;j++){
@@ -103,6 +106,19 @@ int main(){
         }
     }
     draw_rectangle(frambuffer,win_w,win_h,player_x*rect_w,player_y*rect_h,5,5,pack_color(255,255,255));
+    for(size_t i=0;i<win_w;i++){
+        float angle = player_a - fov / 2 + fov * i / float(win_w);
+        for(float t=0;t<20;t+=.05){
+            float cx = player_x + t*cos(angle);
+            float cy = player_y + t*sin(angle);
+            if(map[int(cx) + int(cy)*map_w]!=' ')break;
+            size_t pix_x = cx * rect_w;
+            size_t pix_y = cy * rect_h;
+            frambuffer[pix_x+pix_y*win_w] = pack_color(255,255,255);
+        }
+
+    }
+
 
     drop_ppm_image("./out.ppm",frambuffer,win_w,win_h);
     return 0;
