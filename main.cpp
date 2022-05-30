@@ -160,7 +160,7 @@ int main(){
            size_t rect_y = j * rect_h;
            size_t icolor = map[i+j*map_w] - '0';
            assert(icolor<ncolors);
-           draw_rectangle(frambuffer,win_w,win_h,rect_x,rect_y,rect_w,rect_h,colors[icolor]);
+           draw_rectangle(frambuffer,win_w,win_h,rect_x,rect_y,rect_w,rect_h,walltext[icolor*walltext_size]);
        }
    }
 
@@ -176,17 +176,17 @@ int main(){
                size_t icolor = map[int(cx) + int(cy) * map_w] - '0';
                size_t column_height = win_h / (t * cos(angle - player_a));
                draw_rectangle(frambuffer, win_w, win_h, win_w / 2 + i, win_h / 2 - column_height / 2, 1, column_height,
-                              colors[icolor]);
+                              walltext[icolor*walltext_size]);
                break;
            }
        }
    }
-   const size_t textid = 4;
-   for(size_t i=0;i<walltext_size;i++){
-       for(size_t j=0;j<walltext_size;j++){
-           frambuffer[i+j*win_w] = walltext[i+textid*walltext_size + j*walltext_size*walltext_cnt];
-       }
-   }
+//   const size_t textid = 4;
+//   for(size_t i=0;i<walltext_size;i++){
+//       for(size_t j=0;j<walltext_size;j++){
+//           frambuffer[i+j*win_w] = walltext[i+textid*walltext_size + j*walltext_size*walltext_cnt];
+//       }
+//   }
     drop_ppm_image("./out.ppm",frambuffer,win_w,win_h);
     return 0;
 }
