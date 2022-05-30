@@ -54,6 +54,21 @@ bool load_texture(const std::string filename,std::vector<uint32_t> &texture,size
 
 }
 
+
+std::vector<uint32_t> texture_column(const std::vector<uint32_t>&img,const size_t textsize,const size_t ntextures,const size_t textid,
+        const size_t textcoord,const size_t column_height){
+    const size_t img_w = textsize*ntextures;
+    const size_t img_h = textsize;
+    assert(img.size()==img_w*img_h && textcoord<textsize && textid < ntextures);
+    std::vector<uint32_t> column(column_height);
+    for(size_t y=0;y<column_height;y++){
+        size_t pix_x = textid*textsize + textcoord;
+        size_t pix_y = (y*textsize)/column_height;
+        column[y] = img[pix_x+pix_y*img_w];
+    }
+    return column;
+}
+
 void unpack_color(const uint32_t &color, uint8_t &r,uint8_t &g,uint8_t &b,uint8_t &a){
     r = (color >> 0) & 255;
     g = (color >> 8) & 255;
@@ -175,8 +190,24 @@ int main(){
            if(map[int(cx) + int(cy)*map_w]!=' ') {
                size_t icolor = map[int(cx) + int(cy) * map_w] - '0';
                size_t column_height = win_h / (t * cos(angle - player_a));
-               draw_rectangle(frambuffer, win_w, win_h, win_w / 2 + i, win_h / 2 - column_height / 2, 1, column_height,
-                              walltext[icolor*walltext_size]);
+               float hitx = cx - floor(cx+0.5);
+               float hity = cy - floor(cy+0.5);
+               int x_textcoord = hitx*walltext_size;
+               if(std::abs(hity) > std::abs(hitx)){
+                   x_textcoord = hity*walltext_size;
+               }
+               if(x_textcoord<0){
+                   x_textcoord += walltext_size;
+               }
+               assert(x_textcoord>=0 && x_textcoord<(int)walltext_size);
+               std::vector<uint32_t> column = texture_column(walltext, walltext_size, walltext_cnt, icolor, x_textcoord, column_height);
+
+               pix_x = win_w/2+i;
+               for(size_t j=0;j<column_height;j++){
+                   pix_y = j + win_h/2 - column_height/2;
+                   if(pix_y<0 || pix_y>=(int)win_h)continue;
+                   frambuffer[pix_x+pix_y*win_w] = column[j];
+               }
                break;
            }
        }
