@@ -11,6 +11,7 @@
 #include "framebuffer.h"
 #include "textures.h"
 #include "player.h"
+#include "spirte.h"
 
 
 int wall_x_texcoord(const float x,const  float y,Textures &tex_walls){
@@ -25,7 +26,13 @@ int wall_x_texcoord(const float x,const  float y,Textures &tex_walls){
     return tex;
 }
 
-void render(FrameBuffer &fb,Map &map,Player &player,Textures &tex_walls){
+void map_show_sprite(Sprite &sprite,FrameBuffer &fb,Map &map){
+    const size_t rect_w = fb.w / (map.w * 2);
+    const size_t rect_h = fb.h / map.h;
+    fb.draw_rectangle(sprite.x*rect_w-3,sprite.y*rect_h-3,6,6,pack_color(255,0,0));
+}
+
+void render(FrameBuffer &fb,Map &map,Player &player,std::vector<Sprite>&sprites, Textures &tex_walls,Textures &text_monst){
     fb.clear(pack_color(255,255,255));
     const size_t rect_w = fb.w / (map.w*2);
     const size_t rect_h = fb.h / map.h;
@@ -68,7 +75,9 @@ void render(FrameBuffer &fb,Map &map,Player &player,Textures &tex_walls){
             break;
         }
     }
-
+    for(size_t i=0;i<sprites.size();i++){
+        map_show_sprite(sprites[i],fb,map);
+    }
 }
 
 
@@ -86,12 +95,19 @@ int main(){
         std::cerr<<"Failed to load wall textures" << std::endl;
         return -1;
     }
+    Textures tex_monst("../monsters.png");
+    if(!tex_walls.count || !tex_monst.count){
+        std::cerr << "Failed to load textures" <<  std::endl;
+        return -1;
+    }
+    std::vector<Sprite> sprites {{1.834,8.765,0},{5.323,5,1}};
+
     std::cout << "begin" << std::endl;
     for(size_t frame=0;frame<1;frame++){
         std::stringstream ss;
         ss << std::setfill('0') << std::setw(5) << frame << ".ppm";
         player.a += 2*M_PI/360;
-        render(fb,map,player,tex_walls);
+        render(fb,map,player,sprites,tex_walls,tex_monst);
         drop_ppm_image(ss.str(),fb.img,fb.w,fb.h);
     }
 }

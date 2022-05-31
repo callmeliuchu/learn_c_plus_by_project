@@ -3,4 +3,4 @@ project(myproject)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(myproject stb_image.h utils.cpp map.cpp framebuffer.cpp textures.cpp player.h   main.cpp )
+add_executable(myproject stb_image.h utils.cpp spirte.h map.cpp framebuffer.cpp textures.cpp player.h   main.cpp )
