@@ -27,12 +27,12 @@ Map::Map() : w(16),h(16){
     assert(sizeof(map) == w*h+1);
 }
 
-int Map::get(const size_t i,const size_t j){
+int Map::get(const size_t i,const size_t j) const{
     assert(i<w && j<h && sizeof(map) == w*h+1);
     return map[i+j*w]-'0';
 }
 
-bool Map::is_empty(const size_t i,const size_t j){
+bool Map::is_empty(const size_t i,const size_t j) const{
     assert(i<w && j<h && sizeof(map) == w*h+1);
     return map[i+j*w] == ' ';
 }

@@ -6,5 +6,5 @@
 #include <cstdlib>
 
 bool Sprite::operator < (const Sprite& s) const{
-    return playrt_dist > s.playrt_dist;
+    return player_dist > s.player_dist;
 }

@@ -9,5 +9,6 @@ struct Player{
     float x,y;
     float a;
     float fov;
+    int turn, walk;
 };
 #endif //MYPROJECT_PLAYER_H
