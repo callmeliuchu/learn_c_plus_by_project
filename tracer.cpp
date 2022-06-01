@@ -131,30 +131,31 @@ void render(FrameBuffer &fb,Map &map,Player &player,std::vector<Sprite>&sprites,
 
 
 
-using namespace std;
-
-int main(){
-    FrameBuffer fb{1024,512,std::vector<uint32_t>(1024*512,pack_color(255,255,255))};
-    Player player{3.456,2.345,1.523,M_PI/3.};
-    Map map;
-    Textures tex_walls("../walltext.png");
-    if(!tex_walls.count){
-        std::cerr<<"Failed to load wall textures" << std::endl;
-        return -1;
-    }
-    Textures tex_monst("../monsters.png");
-    if(!tex_walls.count || !tex_monst.count){
-        std::cerr << "Failed to load textures" <<  std::endl;
-        return -1;
-    }
-    std::vector<Sprite> sprites {{1.834,8.765,0},{5.323,5,1}};
-
-    std::cout << "begin" << std::endl;
-    for(size_t frame=0;frame<1;frame++){
-        std::stringstream ss;
-        ss << std::setfill('0') << std::setw(5) << frame << ".ppm";
-        player.a += 2*M_PI/360;
-        render(fb,map,player,sprites,tex_walls,tex_monst);
-        drop_ppm_image(ss.str(),fb.img,fb.w,fb.h);
-    }
-}
+//using namespace std;
+//
+//int main(){
+//    FrameBuffer fb{1024,512,std::vector<uint32_t>(1024*512,pack_color(255,255,255))};
+//    Player player{3.456,2.345,1.523,M_PI/3.};
+//    Map map;
+//    Textures tex_walls("../walltext.png");
+//    if(!tex_walls.count){
+//        std::cerr<<"Failed to load wall textures" << std::endl;
+//        return -1;
+//    }
+//    Textures tex_monst("../monsters.png");
+//    if(!tex_walls.count || !tex_monst.count){
+//        std::cerr << "Failed to load textures" <<  std::endl;
+//        return -1;
+//    }
+//    std::vector<Sprite> sprites{ {3.523, 3.812, 2}, {1.834, 8.765, 0}, {5.323, 5.365, 1}, {4.123, 10.265, 1} };
+//
+//
+//    std::cout << "begin" << std::endl;
+//    for(size_t frame=0;frame<1;frame++){
+//        std::stringstream ss;
+//        ss << std::setfill('0') << std::setw(5) << frame << ".ppm";
+//        player.a += 2*M_PI/360;
+//        render(fb,map,player,sprites,tex_walls,tex_monst);
+//        drop_ppm_image(ss.str(),fb.img,fb.w,fb.h);
+//    }
+//}
